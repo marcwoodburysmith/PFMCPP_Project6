@@ -58,14 +58,14 @@ Purpose:  This project will show you the difference between member functions and
 #include <string>
 struct T
 {
-    T(<#type name#> v, const char* <#variable name#>)   //1
-    //2
-    //3
+    T(int v, const char* ch) : value(v), name(ch) { }  //1
+    int value;//2
+    std::string name;//3
 };
 
-struct <#structName1#>                                //4
+struct compareFunction                               //4
 {
-    <#type name#> compare(<#type name#> a, <#type name#> b) //5
+    T* compare(T* a, T* b) //5
     {
         if( a->value < b->value ) return a;
         if( a->value > b->value ) return b;
@@ -117,11 +117,11 @@ struct <#structname2#>
 
 int main()
 {
-    T <#name1#>( , );                                             //6
-    T <#name2#>( , );                                             //6
+    T t1(40, "a" );                                             //6
+    T t2(12, "d" );                                             //6
     
-    <#structName1#> f;                                            //7
-    auto* smaller = f.compare( , );                              //8
+    compareFunction f;                                            //7
+    auto* smaller = f.compare(&t1, &t2);                              //8
     std::cout << "the smaller one is << " << smaller->name << std::endl; //9
     
     U <#name3#>;
