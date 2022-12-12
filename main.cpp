@@ -78,37 +78,47 @@ struct U
     float name1 { 0 }, name2 { 0 };
     float functionU(float* updatedValue)      //12
     {
-        std::cout << "U's name1 value: " << this->name1 << std::endl;
-        this->name1 = *updatedValue;
-        std::cout << "U's name1 updated value: " << this->name1 << std::endl;
-        while( std::abs(this->name2 - this->name1) > 0.001f )
+        if(updatedValue != nullptr)
         {
+            std::cout << "U's name1 value: " << this->name1 << std::endl;
+            this->name1 = *updatedValue;
+            std::cout << "U's name1 updated value: " << this->name1 << std::endl;
+            while( std::abs(this->name2 - this->name1) > 0.001f )
+            {
             /*
              write something that makes the distance between that-><#name2#> and that-><#name1#> get smaller
              */
-            this->name2 += .5f;
+                this->name2 += .5f;
+            }
+            std::cout << "U's name2 updated value: " << this->name2 << std::endl;
+            return this->name2 * this->name1;
         }
-        std::cout << "U's name2 updated value: " << this->name2 << std::endl;
-        return this->name2 * this->name1;
+        std::cout << "Error -- passing in nullptr" << std::endl; 
+        return 0;
     }
 };
 
 struct V
 {
-    static float functionV(U* that, float* updatedValue )        //10
+    static float functionV(U* that, float* updatedValue )   //10
     {
-        std::cout << "U's name1 value: " << that->name1 << std::endl;
-        that->name1 = *updatedValue;
-        std::cout << "U's name1 updated value: " << that->name1 << std::endl;
-        while( std::abs(that->name2 - that->name1) > 0.001f )
-        {
+        if (that != nullptr && updatedValue != nullptr)
+        {      
+            std::cout << "U's name1 value: " << that->name1 << std::endl;
+            that->name1 = *updatedValue;
+            std::cout << "U's name1 updated value: " << that->name1 << std::endl;
+            while( std::abs(that->name2 - that->name1) > 0.001f )
+            {
             /*
              write something that makes the distance between that-><#name2#> and that-><#name1#> get smaller
              */
-            that->name2 += .5f;
+                that->name2 += .5f;
+            }
+            std::cout << "U's name2 updated value: " << that->name2 << std::endl;
+            return that->name2 * that->name1;
         }
-        std::cout << "U's name2 updated value: " << that->name2 << std::endl;
-        return that->name2 * that->name1;
+        std::cout << "Error -- passing in nullptr" << std::endl; 
+        return 0;
     }
 };
         
