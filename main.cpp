@@ -76,9 +76,20 @@ struct compareFunction                               //4
 struct U
 {
     float name1 { 0 }, name2 { 0 };
-    <#returnType#> functionU(<#type name#>* <#updatedValue#>)      //12
+    float functionU(float* updatedValue)      //12
     {
-        
+        std::cout << "U's name1 value: " << this->name1 << std::endl;
+        this->name1 = *updatedValue;
+        std::cout << "U's name1 updated value: " << this->name1 << std::endl;
+        while( std::abs(this->name2 - this->name1) > 0.001f )
+        {
+            /*
+             write something that makes the distance between that-><#name2#> and that-><#name1#> get smaller
+             */
+            this->name2 += .5f;
+        }
+        std::cout << "U's name2 updated value: " << this->name2 << std::endl;
+        return this->name2 * this->name1;
     }
 };
 
@@ -94,7 +105,7 @@ struct V
             /*
              write something that makes the distance between that-><#name2#> and that-><#name1#> get smaller
              */
-            that->name2 += 0.1f;
+            that->name2 += .5f;
         }
         std::cout << "U's name2 updated value: " << that->name2 << std::endl;
         return that->name2 * that->name1;
@@ -126,8 +137,8 @@ int main()
     
     U u1;
     float updatedValue = 5.f;
-    std::cout << "[static func] u's multiplied values: " << V::functionV(&u, &updatedValue) << std::endl;                  //11
+    std::cout << "[static func] u's multiplied values: " << V::functionV(&u1, &updatedValue) << std::endl;                  //11
     
     U u2;
-    std::cout << "[member func] u2's multiplied values: " << <#name4#>.<#memberFunction#>( &updatedValue ) << std::endl;
+    std::cout << "[member func] u2's multiplied values: " << u2.functionU(&updatedValue) << std::endl;
 }
