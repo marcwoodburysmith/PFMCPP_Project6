@@ -142,8 +142,15 @@ int main()
     T t2(12, "d" );                                             //6
     
     compareFunction f;                                            //7
-    auto* smaller = f.compare(&t1, &t2);                              //8
-    std::cout << "the smaller one is << " << smaller->name << std::endl; //9
+    auto* smaller = f.compare(&t1, &t2); //8
+    if (smaller != nullptr)
+    {
+        std::cout << "the smaller one is << " << smaller->name << std::endl;
+    }//9
+    else
+    {
+        std::cout << "Error -- smaller is a nullptr" << std::endl;
+    }
     
     U u1;
     float updatedValue = 5.f;
