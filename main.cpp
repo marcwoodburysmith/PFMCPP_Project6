@@ -149,7 +149,7 @@ int main()
     }//9
     else
     {
-        std::cout << "Error -- smaller is a nullptr" << std::endl;
+        std::cout << "Error -- one or both parameters are null pointers or both values are equal" << std::endl;
     }
     
     U u1;
