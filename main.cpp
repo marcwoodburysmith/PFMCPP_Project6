@@ -36,10 +36,10 @@ struct T
 
 struct compareFunction                               //4
 {
-    T* compare(T* a, T* b) //5
+    T* compare(T& a, T& b) //5
     {
-        if( a->value < b->value ) return a;
-        if( a->value > b->value ) return b;
+        if( a.value < b.value ) return &a;
+        if( a.value > b.value ) return &b;
         return nullptr;
     }
 };
@@ -47,49 +47,39 @@ struct compareFunction                               //4
 struct U
 {
     float name1 { 0 }, name2 { 0 };
-    float functionU(float* updatedValue)      //12
-    {
-        if(updatedValue != nullptr)
+    float functionU(const float& updatedValue)      //12
+    { 
+        std::cout << "U's name1 value: " << this->name1 << std::endl;
+        this->name1 = updatedValue;
+        std::cout << "U's name1 updated value: " << this->name1 << std::endl;
+        while( std::abs(this->name2 - this->name1) > 0.001f )
         {
-            std::cout << "U's name1 value: " << this->name1 << std::endl;
-            this->name1 = *updatedValue;
-            std::cout << "U's name1 updated value: " << this->name1 << std::endl;
-            while( std::abs(this->name2 - this->name1) > 0.001f )
-            {
             /*
              write something that makes the distance between that-><#name2#> and that-><#name1#> get smaller
              */
-                this->name2 += .5f;
-            }
-            std::cout << "U's name2 updated value: " << this->name2 << std::endl;
-            return this->name2 * this->name1;
+            this->name2 += .5f;
         }
-        std::cout << "Error -- passing in nullptr" << std::endl; 
-        return 0;
+        std::cout << "U's name2 updated value: " << this->name2 << std::endl;
+        return this->name2 * this->name1;      
     }
 };
 
 struct V
 {
-    static float functionV(U* that, float* updatedValue )   //10
-    {
-        if (that != nullptr && updatedValue != nullptr)
-        {      
-            std::cout << "U's name1 value: " << that->name1 << std::endl;
-            that->name1 = *updatedValue;
-            std::cout << "U's name1 updated value: " << that->name1 << std::endl;
-            while( std::abs(that->name2 - that->name1) > 0.001f )
-            {
+    static float functionV(U& that, const float& updatedValue )   //10
+    {           
+        std::cout << "U's name1 value: " << that.name1 << std::endl;
+        that.name1 = updatedValue;
+        std::cout << "U's name1 updated value: " << that.name1 << std::endl;
+        while( std::abs(that.name2 - that.name1) > 0.001f )
+        {
             /*
              write something that makes the distance between that-><#name2#> and that-><#name1#> get smaller
              */
-                that->name2 += .5f;
-            }
-            std::cout << "U's name2 updated value: " << that->name2 << std::endl;
-            return that->name2 * that->name1;
+            that.name2 += .5f;
         }
-        std::cout << "Error -- passing in nullptr" << std::endl; 
-        return 0;
+        std::cout << "U's name2 updated value: " << that.name2 << std::endl;
+        return that.name2 * that.name1;    
     }
 };
         
@@ -113,20 +103,20 @@ int main()
     T t2(12, "d" );                                             //6
     
     compareFunction f;                                            //7
-    auto* smaller = f.compare(&t1, &t2); //8
+    auto* smaller = f.compare(t1, t2); //8
     if (smaller != nullptr)
     {
         std::cout << "the smaller one is << " << smaller->name << std::endl;
     }//9
     else
     {
-        std::cout << "Error -- one or both parameters are null pointers or both values are equal" << std::endl;
+        std::cout << "Error -- nullptr returned becasue both values are equal" << std::endl;
     }
     
     U u1;
     float updatedValue = 5.f;
-    std::cout << "[static func] u's multiplied values: " << V::functionV(&u1, &updatedValue) << std::endl;                  //11
+    std::cout << "[static func] u's multiplied values: " << V::functionV(u1, updatedValue) << std::endl;                  //11
     
     U u2;
-    std::cout << "[member func] u2's multiplied values: " << u2.functionU(&updatedValue) << std::endl;
+    std::cout << "[member func] u2's multiplied values: " << u2.functionU(updatedValue) << std::endl;
 }
